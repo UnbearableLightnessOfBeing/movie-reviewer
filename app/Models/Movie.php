@@ -36,4 +36,8 @@ class Movie extends Model
     public function comments() {
         return $this->hasMany(Commetn::class);
     }
+
+    public function ratings() {
+        return $this->hasMany(Rating::class);
+    }
 }

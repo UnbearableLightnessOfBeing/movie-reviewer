@@ -17,6 +17,14 @@ class User extends Authenticatable
         return $this->hasMany(Commetn::class);
     }
 
+    public function ratings() {
+        return $this->hasMany(Rating::class);
+    }
+
+    public function favoriteMovies() {
+        return $this->belongsToMany(Movie::class, 'movie_user');
+    }
+
     /**
      * The attributes that are mass assignable.
      *

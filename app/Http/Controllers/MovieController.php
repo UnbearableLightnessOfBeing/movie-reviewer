@@ -6,6 +6,8 @@ use App\Models\Movie;
 use App\Http\Requests\StoreMovieRequest;
 use App\Http\Requests\UpdateMovieRequest;
 
+use Illuminate\Support\Facades\Auth;
+
 class MovieController extends Controller
 {
     /**
@@ -72,6 +74,31 @@ class MovieController extends Controller
 
         $movie = Movie::find($id); 
 
+        // find user rating
+        $userRating = null;
+        if(Auth::user()) {
+            $userRating = $movie->ratings->where('movie_id', $movie->id)
+            ->where('user_id', Auth::user()->id)->map(function($rating) {
+                return [
+                    'id' => $rating->id,
+                    'rating' => $rating->rating,
+                ];
+            })->first(); 
+        }
+
+        // calculate movie rating
+        $numerator = $movie->ratings->reduce(function($cv, $rating) {
+                return $cv + $rating->rating;
+            });
+        $denominator = $movie->ratings->count(); 
+
+        if($denominator === 0) {
+            $rating = null;
+        }
+        else {
+            $rating = $numerator / $denominator;
+        }
+
         return [
             'id' => $movie->id,
             'title' => $movie->title,
@@ -92,6 +119,9 @@ class MovieController extends Controller
             'genres' => $movie->genres->map(function($genre) {
                 return $genre->title;
             }),
+            'rating' => $rating,
+            'ratingCount' => $movie->ratings->count(),
+            'userRating' => $userRating,
         ];
     }
 

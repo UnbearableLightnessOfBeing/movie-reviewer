@@ -42,7 +42,8 @@ class CommetnController extends Controller
 
         // dd(User::find($request->user()->id), Movie::find($movieId));
 
-        $comment = new Commetn($request->all());
+        $comment = new Commetn();
+        $comment->fill($request->validated());
         $comment->movie()->associate(Movie::find($movieId));
         $comment->user()->associate(User::find($request->user()->id));
         $comment->save();

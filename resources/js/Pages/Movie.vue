@@ -3,16 +3,19 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
 import Comment from '@/Components/Comment.vue';
+import FavoriteIndicator from '@/Components/FavoriteIndicator.vue';
+import RatingPopup from '@/Components/RatingPopup.vue';
 import { Link, usePage, useForm } from '@inertiajs/inertia-vue3';
+import { ref, watch } from 'vue';
 
-import { VueStars } from 'vue-stars';
-// Vue.component("vue-stars", VueStars)
+
 
 const props = defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
     movie: Object,
     comments: Array || Object,
+    isFavorite: Boolean || null,
 });
 
 const user = usePage().props.value.auth.user;
@@ -22,6 +25,14 @@ const form = useForm({
     movieId: props.movie.id,
 });
 
+let isBeingRated = ref(false);
+let ratingMethod = ref('store');
+
+function updateState(state) {
+    isBeingRated.value = state;
+}
+
+
 </script>
 
 <template>
@@ -30,20 +41,31 @@ const form = useForm({
             <pre>
                 {{ movie }}
             </pre>
+            favorite: {{ isFavorite }}
 
-            <vue-stars
-                name="demo"
-                :active-color="'#ffdd00'"
-                :inactive-color="'#999999'"
-                :shadow-color="'#ffff00'"
-                :hover-color="'#dddd00'"
-                :max="10"
-                :value="4"
-                :readonly="false"
-                char="★"
-                inactive-char="☆"
-                :class="''" 
-            />
+            
+            <div class="movie-rating m-3">
+                <div class="rating-wrapper">
+                    <div v-if="!$page.props.auth.user" class="border border-pink-500 w-fit text-xl text-red-800 p-2 hover:cursor-pointer"
+                    >Авторизуйтесь, чтобы оценить фильм</div>
+                    <div v-else class="authenticated">
+                        <div v-if="movie.userRating" class="rated flex gap-6 items-end">
+                            <div>
+                                Ваша оценка: {{ movie.userRating.rating }}
+                            </div>
+                            <div class="text-sm text-green-600 hover:underline hover:cursor-pointer"
+                                @click="isBeingRated = true; ratingMethod = 'update';">Изменить оценку</div>
+                        </div>
+                        <div v-else  class="border border-pink-500 w-fit text-xl text-red-800 p-2 hover:cursor-pointer"
+                            @click="isBeingRated = true">Оценить фильм</div>
+                        <RatingPopup v-if="isBeingRated" :ratingId="+movie.userRating?.id" :method="ratingMethod" :movieId="movie.id" @update:isBeingRated="updateState" />
+                        <!-- <star-rating class="p-4" :border-width="6" :rounded-corners="true" :star-size="70" :glow="10" glow-color="#ffd055"></star-rating> -->
+                    </div>
+                </div>
+                <div v-if="$page.props.auth.user && isFavorite !== null" class="favorite-wrapper">
+                    <FavoriteIndicator :isFavorite="isFavorite" :movieId="movie.id" />
+                </div>
+            </div>
 
         </div>
 

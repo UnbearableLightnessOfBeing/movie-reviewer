@@ -3,7 +3,9 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\MovieController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommetnController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -45,11 +47,30 @@ Route::get('/movies/{id}', function ($id) {
         'canRegister' => Route::has('register'),
         'movie' => MovieController::show($id),
         'comments' => CommetnController::index($id),
+        'isFavorite' => UserController::movieIsFavorite($id),
     ]);
 })->name('movie.show');
 
 Route::resource('comments', CommetnController::class)
-->only(['store', 'update', 'destroy']);
+->only(['store', 'update', 'destroy'])
+->middleware(['auth', 'verified']);
+
+Route::resource('ratings', RatingController::class)
+->only(['store', 'update' ])
+->middleware(['auth', 'verified']);
+
+Route::post('user', [UserController::class, 'storeInFavorite'])
+->name('user.storeInFavorite');
+
+Route::put('user', [UserController::class, 'deleteFromFavorite'])
+->name('user.deleteFromFavorite');
+
+Route::get('user', [UserController::class, 'movieIsFavorite'])
+->name('user.movieIsFavorite');
+
+// Route::resource('user', UserController::class)
+// ->only(['storeInFavorite', 'deleteFromFavorite' ])
+// ->middleware(['auth', 'verified']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

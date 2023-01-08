@@ -22,7 +22,6 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
-        "dayjs": "^1.11.7",
-        "vue-stars": "^2.0.0"
+        "dayjs": "^1.11.7"
     }
 }
