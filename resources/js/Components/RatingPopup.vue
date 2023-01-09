@@ -1,8 +1,9 @@
 <script setup>
-import StarRating from 'vue-star-rating';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import InputError from '@/Components/InputError.vue';
 import { defineEmits, defineProps } from 'vue';
+
+// import vue3starRatings from "vue3-star-ratings";
 
 import { Link, usePage, useForm } from '@inertiajs/inertia-vue3';
 
@@ -37,6 +38,28 @@ function doAction(method) {
 
 const emit = defineEmits(['update:isBeingRated']);
 
+
+const desc = [{
+          text: 'Poor',
+          class: 'star-poor'
+        },
+        {
+          text: 'Below Average',
+          class: 'star-belowAverage'
+        },
+        {
+          text: 'Average',
+          class: 'star-average'
+        },
+        {
+          text: 'Good',
+          class: 'star-good'
+        },
+        {
+          text: 'Excellent',
+          class: 'star-excellent'
+        }];
+
 </script>
 
 <template>
@@ -48,6 +71,7 @@ const emit = defineEmits(['update:isBeingRated']);
             <form @submit.prevent="doAction(method)">
                 <star-rating v-model="form.rating" class="p-4 m-4" :max-rating="10" text-class="text-4xl text-red-500" 
                             :star-size="35" @update:rating ="setRating" ></star-rating>
+                <!-- <vue3-star-ratings v-model="form.rating" /> -->
                 <InputError :message="form.errors.rating" class="mt-2" />
 
                 <h1 class="text-white">
