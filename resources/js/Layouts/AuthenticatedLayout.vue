@@ -40,6 +40,9 @@ let user = ref(usePage().props.value.auth.user);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
                                     Фильмы
                                 </NavLink>
+                                <NavLink v-if="$page.props.isAdmin" :href="route('admin.index')" :active="route().current('admin')">
+                                    Администратор
+                                </NavLink>
                             </div>
                         </div>
 

@@ -34,12 +34,30 @@ Route::get('/', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/movies', function () {
+    if(auth()->user()) {
+        auth()->user()->assignRole('admin');
+    }
     return Inertia::render('Dashboard', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'movies' => MovieController::index(),
     ]);
 })->name('dashboard');
+
+Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function() {
+    Route::get('/', function() {
+        return Inertia::render('Admin/Index');
+    })->name('index');
+    Route::resource('/movies', \App\Http\Controllers\Admin\MovieController::class);
+    Route::resource('/genres', \App\Http\Controllers\Admin\GenreController::class);
+    Route::resource('/countries', \App\Http\Controllers\Admin\CountryController::class);
+    Route::resource('/actors', \App\Http\Controllers\Admin\ActorController::class);
+    Route::resource('/comments', \App\Http\Controllers\Admin\CommentController::class);
+    Route::resource('/ratings', \App\Http\Controllers\Admin\RatingController::class);
+    Route::resource('/users', \App\Http\Controllers\Admin\UserController::class);
+
+}); 
+
 
 Route::get('/movies/{id}', function ($id) {
     return Inertia::render('Movie', [

@@ -39,6 +39,7 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'isAdmin' => $request->user()? $request->user()->hasRole('admin') : false,
         ]);
     }
 }
