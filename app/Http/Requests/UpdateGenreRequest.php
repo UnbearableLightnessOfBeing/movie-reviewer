@@ -13,7 +13,7 @@ class UpdateGenreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->hasRole('admin');
     }
 
     /**
@@ -24,7 +24,15 @@ class UpdateGenreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['required', 'unique:genres,title']
+        ];
+    }
+
+
+    public function messages() {
+        return [
+            'required' => 'Поле необходимо заполнить',
+            'unique' => 'Такой жанр уже добавлен',
         ];
     }
 }

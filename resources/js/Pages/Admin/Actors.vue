@@ -5,6 +5,11 @@ import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 <template>
     <AdminLayout>
+        <template #header>
+            <h1 class="text-3xl font-bold text-indigo-600">
+                Актёры
+            </h1>
+        </template>
         --------------------------->..>>>>>>>   actors page
     </AdminLayout>
 </template>

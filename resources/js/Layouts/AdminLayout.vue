@@ -16,16 +16,19 @@ let sidebarOpen = ref(true);
 let dropdownOpen = ref(false);
 let notificationOpen = ref(false);
 
+function setSidebar(value) {
+    sidebarOpen.value = value;
+}
+
 </script>
 
 <template>
     <div>
         <div class="flex h-screen bg-gray-200 font-roboto">
+            <Sidebar :sidebarOpen="sidebarOpen" @update:sidebarOpen="setSidebar" />
             <div class="flex-1 flex flex-col overflow-hidden">
-                <Sidebar v-if="sidebarOpen" />
 
-
-                <header class="flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-600">
+                <header class="w-full h-fit flex justify-between items-center py-4 px-6 bg-white border-b-4 border-indigo-600">
                     <div class="flex items-center">
                         <button @click="sidebarOpen = true" class="text-gray-500 focus:outline-none lg:hidden">
                             <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -143,7 +146,7 @@ let notificationOpen = ref(false);
                 </header>
 
                 <!-- Page Content -->
-                <main>
+                <main class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-200">
                     <slot />
                 </main>
             </div>

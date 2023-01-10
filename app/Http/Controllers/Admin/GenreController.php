@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Genre;
+use App\Http\Requests\StoreGenreRequest;
+use App\Http\Requests\UpdateGenreRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,9 +16,19 @@ class GenreController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Admin/Genres');
+
+        $perPage = $request->query('perPage') ?? 5;
+        return Inertia::render('Admin/Genres/Index', [
+            'genres' => Genre::query()
+                            ->when($request->input('search'), function($query, $search) {
+                                $query->where('title', 'like', "%{$search}%");
+                            })
+                            ->paginate($perPage)
+                            ->withQueryString(),
+            'filters' => $request->only(['search', 'perPage']),
+        ]);
     }
 
     /**
@@ -25,7 +38,7 @@ class GenreController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Genres/Create');
     }
 
     /**
@@ -34,9 +47,13 @@ class GenreController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreGenreRequest $request)
     {
-        //
+        $genre = new Genre();
+        $genre->fill($request->validated());
+        $genre->save();
+
+        return redirect(route('admin.genres.create'));
     }
 
     /**
@@ -58,7 +75,9 @@ class GenreController extends Controller
      */
     public function edit($id)
     {
-        //
+        return Inertia::render('Admin/Genres/Edit', [
+            'genre' => Genre::find($id),
+        ]);
     }
 
     /**
@@ -68,9 +87,13 @@ class GenreController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateGenrerequest $request, $id)
     {
-        //
+        $genre = Genre::find($id);
+        $genre->fill($request->validated());
+        $genre->update();
+
+        return redirect(route('admin.genres.index'));
     }
 
     /**
@@ -81,6 +104,8 @@ class GenreController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Genre::find($id)->delete();
+
+        return redirect(route('admin.genres.index'));
     }
 }

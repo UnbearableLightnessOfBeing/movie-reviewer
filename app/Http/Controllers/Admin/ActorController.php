@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+use App\Models\Actor;
+
 class ActorController extends Controller
 {
     /**
@@ -13,9 +15,20 @@ class ActorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Admin/Actors');
+        // return Inertia::render('Admin/Actors');
+
+        $perPage = $request->query('perPage') ?? 5;
+        return Inertia::render('Admin/Actors/Index', [
+            'actors' => Actor::query()
+                            ->when($request->input('search'), function($query, $search) {
+                                $query->where('name', 'like', "%{$search}%");
+                            })
+                            ->paginate($perPage)
+                            ->withQueryString(),
+            'filters' => $request->only(['search', 'perPage']),
+        ]);
     }
 
     /**
