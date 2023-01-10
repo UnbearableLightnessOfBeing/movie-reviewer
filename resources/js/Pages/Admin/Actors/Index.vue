@@ -14,10 +14,13 @@ const props = defineProps(['actors', 'filters', 'notifs']);
                 Актёры
             </h1>
         </template>
-        <div class="py-12">
+        <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <AdminInterractor :items="actors" :filters="filters" :notifs="notifs" routeName='actors'>
-                    <template #table="tableProps" >
+                    <template v-slot:table-headings>
+                        <th class="px-4 py-3">Имя</th>
+                    </template>
+                    <template v-slot:table="tableProps" >
                         <td class="px-4 py-3 border w-full">
                             {{ tableProps.item.name }}
                         </td>

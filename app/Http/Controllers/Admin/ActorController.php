@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Http\Requests\StoreActorRequest;
+use App\Http\Requests\UpdateActorRequest;
 
 use App\Models\Actor;
 
@@ -38,7 +40,7 @@ class ActorController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Admin/Actors/Create');
     }
 
     /**
@@ -47,9 +49,13 @@ class ActorController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreActorRequest $request)
     {
-        //
+        $actor = new Actor();
+        $actor->fill($request->validated());
+        $actor->save();
+
+        return redirect(route('admin.actors.index'));
     }
 
     /**
@@ -71,7 +77,9 @@ class ActorController extends Controller
      */
     public function edit($id)
     {
-        //
+        return Inertia::render('Admin/Actors/Edit', [
+            'actor' => Actor::find($id),
+        ]);
     }
 
     /**
@@ -81,9 +89,13 @@ class ActorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateActorRequest $request, $id)
     {
-        //
+        $actor = Actor::find($id);
+        $actor->fill($request->validated());
+        $actor->update();
+
+        return redirect(route('admin.actors.index'));
     }
 
     /**
@@ -94,6 +106,8 @@ class ActorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Actor::find($id)->delete();
+
+        return redirect(route('admin.actors.index'));
     }
 }

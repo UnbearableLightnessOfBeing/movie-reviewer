@@ -13,7 +13,7 @@ class UpdateCountryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->hasRole('admin');
     }
 
     /**
@@ -24,7 +24,14 @@ class UpdateCountryRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'title' => ['required', 'unique:countries,title']
+        ];
+    }
+
+    public function messages() {
+        return [
+            'required' => 'Поле необходимо заполнить',
+            'unique' => 'Страна таким названием уже добавленa',
         ];
     }
 }

@@ -8,14 +8,16 @@ import PopupSuccess from '@/Components/PopupSuccess.vue';
 import AdminEdit from '@/Components/AdminEdit.vue';
 import { defineProps } from 'vue';
 
-const props = defineProps(['genre']);
+const props = defineProps({
+    actor: Object,
+});
 
 const form = useForm({
-    title: props.genre.title,
+    name: props.actor.name,
 });
 
 form.defaults({
-    title: props.genre.title,
+    name: props.actor.name,
 });
 
 </script>
@@ -29,12 +31,12 @@ form.defaults({
             </h1>
             <Head title="Редактировать жанр" />
         </template>
-        <AdminEdit routeName="genres" :form="form" :item="genre">
+        <AdminEdit routeName="actors" :form="form" :item="actor">
             <template v-slot:inputs>
-                <InputLabel for="first-name" class="block w-full text-sm font-medium text-gray-700">Название жанра: </InputLabel>
-                <TextInput v-model="form.title" required type="text" autocomplete="given-name"
+                <InputLabel for="first-name" class="block w-full text-sm font-medium text-gray-700">Имя актёра: </InputLabel>
+                <TextInput v-model="form.name" required type="text" autocomplete="given-name"
                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                <InputError :message="form.errors.title" class="mt-2" />
+                <InputError :message="form.errors.name" class="mt-2" />
             </template>
         </AdminEdit>
     </AdminLayout>
@@ -44,3 +46,4 @@ form.defaults({
 <style lang="scss" scoped>
 
 </style>
+

@@ -8,7 +8,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 
 
 const form = useForm({
-    title: '',
+    name: '',
 });
 
 </script>
@@ -18,16 +18,16 @@ const form = useForm({
     <AdminLayout>
         <template #header>
             <h1 class="text-3xl font-bold text-indigo-600">
-                Жанры
+                Актёры
             </h1>
-            <Head title="Добавить жанр" />
+            <Head title="Добавить актёра" />
         </template>
-        <AdminCreate routeName="genres" :form="form">
+        <AdminCreate routeName="actors" :form="form">
             <template v-slot:inputs>
-                <InputLabel for="first-name" class="block text-sm font-medium text-gray-700">Название жанра: </InputLabel>
-                <TextInput v-model="form.title" required type="text" autocomplete="given-name"
+                <InputLabel for="first-name" class="block text-sm font-medium text-gray-700">Имя актёра: </InputLabel>
+                <TextInput v-model="form.name" required type="text" autocomplete="given-name"
                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
-                <InputError :message="form.errors.title" class="mt-2" />
+                <InputError :message="form.errors.name" class="mt-2" />
             </template>
         </AdminCreate>
     </AdminLayout>

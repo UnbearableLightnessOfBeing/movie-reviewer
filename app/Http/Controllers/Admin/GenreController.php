@@ -53,7 +53,7 @@ class GenreController extends Controller
         $genre->fill($request->validated());
         $genre->save();
 
-        return redirect(route('admin.genres.create'));
+        return redirect(route('admin.genres.index'));
     }
 
     /**

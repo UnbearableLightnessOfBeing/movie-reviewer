@@ -13,7 +13,7 @@ class UpdateActorRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->hasRole('admin');
     }
 
     /**
@@ -24,7 +24,14 @@ class UpdateActorRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', 'unique:actors,name']
+        ];
+    }
+
+    public function messages() {
+        return [
+            'required' => 'Поле необходимо заполнить',
+            'unique' => 'Актёр с таким именем уже добавлен',
         ];
     }
 }

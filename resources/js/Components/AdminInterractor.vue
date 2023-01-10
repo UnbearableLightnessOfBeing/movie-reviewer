@@ -83,7 +83,9 @@ function fireConfirmation(itemId) {
                 <thead>
                     <tr
                         class="text-md font-semibold tracking-wide text-left text-gray-900 bg-gray-100 uppercase ">
-                        <th class="px-4 py-3">Название</th>
+                        <slot name="table-headings">
+                            heading example
+                        </slot>
                         <th class="px-4 py-3">Управление</th>
                     </tr>
                 </thead>
@@ -96,7 +98,7 @@ function fireConfirmation(itemId) {
                                 </td>
                             </slot>
                             <td class="px-4 py-3 text-sm border w-fit flex gap-2">
-                                <Link :href="route('admin.genres.edit', { id: item.id })"
+                                <Link :href="route('admin.'+ routeName +'.edit', { id: item.id })"
                                     class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Редактировать</Link>
                                 <button @click="fireConfirmation(item.id)" 
                                     class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Удалить</button>

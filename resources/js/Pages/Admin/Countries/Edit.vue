@@ -8,14 +8,14 @@ import PopupSuccess from '@/Components/PopupSuccess.vue';
 import AdminEdit from '@/Components/AdminEdit.vue';
 import { defineProps } from 'vue';
 
-const props = defineProps(['genre']);
+const props = defineProps(['country']);
 
 const form = useForm({
-    title: props.genre.title,
+    title: props.country.title,
 });
 
 form.defaults({
-    title: props.genre.title,
+    title: props.country.title,
 });
 
 </script>
@@ -25,13 +25,13 @@ form.defaults({
     <AdminLayout>
         <template #header>
             <h1 class="text-3xl font-bold text-indigo-600">
-                Жанры
+                Страны
             </h1>
             <Head title="Редактировать жанр" />
         </template>
-        <AdminEdit routeName="genres" :form="form" :item="genre">
+        <AdminEdit routeName="countries" :form="form" :item="country">
             <template v-slot:inputs>
-                <InputLabel for="first-name" class="block w-full text-sm font-medium text-gray-700">Название жанра: </InputLabel>
+                <InputLabel for="first-name" class="block w-full text-sm font-medium text-gray-700">Название страны: </InputLabel>
                 <TextInput v-model="form.title" required type="text" autocomplete="given-name"
                     class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" />
                 <InputError :message="form.errors.title" class="mt-2" />
@@ -44,3 +44,4 @@ form.defaults({
 <style lang="scss" scoped>
 
 </style>
+
