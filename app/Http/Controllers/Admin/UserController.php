@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -13,9 +14,23 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Admin/Users');
+        $perPage = $request->query('perPage') ?? 5;
+
+        $userId = $request->query('userId');
+
+        return Inertia::render('Admin/Users/Index', [
+            'users' => User::query()
+                            ->when($request->input('search'), function($query, $search) {
+                                $query->where('name', 'like', "%{$search}%");
+                            })
+                            ->with('roles')
+                            ->paginate($perPage)
+                            ->withQueryString(),
+            'filters' => $request->only(['search', 'perPage']),
+            'watchedUser' => $userId? User::find($userId)->load('roles') : null,
+        ]);
     }
 
     /**

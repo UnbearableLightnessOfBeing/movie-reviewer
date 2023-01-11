@@ -5,10 +5,27 @@ import { Inertia } from '@inertiajs/inertia';
 import { Link } from '@inertiajs/inertia-vue3';
 import { defineProps, ref, watch } from 'vue';
 
-const props = defineProps(['items', 'filters', 'notifs', 'routeName']);
+// const props = defineProps(['items', 'filters', 'notifs', 'routeName']);
+const props = defineProps({
+    items: Array,
+    filters: Object,
+    notifs: Object,
+    routeName: String,
+    creatable: {
+        type: Boolean,
+        default: true,
+    },
+    watchable: {
+        type: Boolean,
+        default: false,
+    }
+});
+
+const emits = defineEmits(['update:watchedItem']);
 
 let perPage = ref(props.filters.perPage ?? 5);
 let search = ref(props.filters.search ?? '');
+
 
 let queryFilters = ref({
     search: search.value, 
@@ -36,7 +53,7 @@ function fireConfirmation(itemId) {
 
 <template>
     <section class="container mx-auto p-6 font-mono">
-    <div class="w-full flex mb-4 p-2 justify-end">
+    <div v-if="creatable" class="w-full flex mb-4 p-2 justify-end">
         <Link :href="route('admin.'+ routeName +'.create')" class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Добавить</Link>
     </div>
     <!-- <PopupSuccess v-if="notifs.message" :message="notifs.message" /> -->
@@ -91,15 +108,17 @@ function fireConfirmation(itemId) {
                 </thead>
                 <tbody class="bg-white">
                         <tr class="text-gray-700"
-                            v-for="item in items.data" :key="item.id">
+                            v-for="item in items" :key="item.id">
                             <slot name="table" :item="item">
                                 <td class="px-4 py-3 border w-full">
                                     item example
                                 </td>
                             </slot>
                             <td class="px-4 py-3 text-sm border w-fit flex gap-2">
+                                <button v-if="watchable" @click="$emit('update:watchedItem', item.id)" 
+                                    class="bg-indigo-500 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">Посмотреть</button>
                                 <Link :href="route('admin.'+ routeName +'.edit', { id: item.id })"
-                                    class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg">Редактировать</Link>
+                                    class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg p-auto">Редактировать</Link>
                                 <button @click="fireConfirmation(item.id)" 
                                     class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Удалить</button>
                             </td>

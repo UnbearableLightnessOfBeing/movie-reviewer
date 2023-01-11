@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Storage;
 
 class AvatarController extends Controller
 {
@@ -25,7 +26,12 @@ class AvatarController extends Controller
 
             if(explode('/', $mimeType)[1] === 'png'
             || explode('/', $mimeType)[1] === 'jpeg'
-            )  {
+            ) 
+            {
+                $avatar = $request->user()->avatar;
+                if($avatar) {
+                    Storage::disk('public')->delete($avatar);
+                }
                 $path = $request->file('avatar')->storeAs('images/avatars', $request->user()->id . '-' . $imageName, 'public');
                 $request->user()->avatar = $path;
             }
