@@ -63,7 +63,8 @@ const props = defineProps(['users', 'filters', 'notifs', 'watchedUser']);
         </template>
         <div class="py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <AdminInterractor @update:watched-item="updateWatchedUser" :items="users.data" :filters="filters" :notifs="notifs" :watchable="true" routeName='users' :creatable="false" >
+                <AdminInterractor @update:watched-item="updateWatchedUser" :items="users.data" :filters="filters" 
+                                :notifs="notifs" :watchable="true" routeName='users' :creatable="false" :deletable="false" >
                     <template v-slot:table-headings>
                         <th class="px-4 py-3">Имя</th>
                         <th class="px-4 py-3">Email</th>

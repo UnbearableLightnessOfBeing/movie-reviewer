@@ -55,6 +55,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('/comments', \App\Http\Controllers\Admin\CommentController::class);
     Route::resource('/ratings', \App\Http\Controllers\Admin\RatingController::class);
     Route::resource('/users', \App\Http\Controllers\Admin\UserController::class);
+    // Route::resource('/avatar', \App\Http\Controllers\Admin\AvatarController::class);
 
 }); 
 
@@ -94,6 +95,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/avatar', [AvatarController::class, 'update'])->name('avatar.update');
+    Route::post('/admin-avatar', [\App\Http\Controllers\Admin\AvatarController::class, 'update'])->name('admin.avatar.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

@@ -3,32 +3,23 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
-use Inertia\Inertia;
+use App\Http\Requests\AvatarUpdateRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use App\Models\User;
 
-class UserController extends Controller
+class AvatarController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $perPage = $request->query('perPage') ?? 5;
-
-        return Inertia::render('Admin/Users/Index', [
-            'users' => User::query()
-                            ->when($request->input('search'), function($query, $search) {
-                                $query->where('name', 'like', "%{$search}%");
-                            })
-                            ->with('roles')
-                            ->paginate($perPage)
-                            ->withQueryString(),
-            'filters' => $request->only(['search', 'perPage']),
-        ]);
+        //
     }
 
     /**
@@ -38,6 +29,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -70,9 +62,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return Inertia::render('Admin/Users/Edit', [
-            'user' => User::find($id)->load('roles'),
-        ]);
+
     }
 
     /**
@@ -82,22 +72,30 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateUserRequest $request, $id)
+    public function update(AvatarUpdateRequest $request): RedirectResponse
     {
-        $user = User::find($id);
+        $user = User::find($request->input('userId'));
+        if($request->hasFile('avatar')) {
+            $imageName = $request->avatar->getClientOriginalName();
+            $mimeType = $request->avatar->getClientMimeType();
 
-        $user->name = $request->input('name');
-
-        if($request->input('isAdmin')) {
-            $user->assignRole('admin');
-        }
-        else {
-            $user->removeRole('admin');
+            if(explode('/', $mimeType)[1] === 'png'
+            || explode('/', $mimeType)[1] === 'jpeg'
+            ) 
+            {
+                $avatar = $user->avatar;
+                if($avatar) {
+                    Storage::disk('public')->delete($avatar);
+                }
+                $path = $request->file('avatar')->storeAs('images/avatars', $user->id . '-' . $imageName, 'public');
+                $user->avatar = $path;
+            }
         }
 
         $user->update();
 
-        return redirect()->route('admin.users.index');
+        return Redirect::route('admin.users.edit', $user->id);
+
     }
 
     /**

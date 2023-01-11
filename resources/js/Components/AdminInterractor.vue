@@ -18,6 +18,10 @@ const props = defineProps({
     watchable: {
         type: Boolean,
         default: false,
+    },
+    deletable: {
+        type: Boolean,
+        default: true,
     }
 });
 
@@ -119,7 +123,7 @@ function fireConfirmation(itemId) {
                                     class="bg-indigo-500 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">Посмотреть</button>
                                 <Link :href="route('admin.'+ routeName +'.edit', { id: item.id })"
                                     class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg p-auto">Редактировать</Link>
-                                <button @click="fireConfirmation(item.id)" 
+                                <button v-if="deletable" @click="fireConfirmation(item.id)" 
                                     class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Удалить</button>
                             </td>
                         </tr>
