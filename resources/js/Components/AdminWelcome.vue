@@ -1,5 +1,10 @@
 <script setup>
 
+import { defineProps } from 'vue';
+
+const props = defineProps({
+    statistic: Object,
+});
 </script>
 
 <template>
@@ -23,7 +28,7 @@
                 </path>
             </svg>
             <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">
-                <span class="text-xl font-bold text-blue-500">Количестао пользователей</span> Users in Database
+                <span class="text-xl font-bold text-blue-500">Количество пользователей</span> {{ statistic.userCount }}
             </div>
         </div>
     </div>
@@ -38,7 +43,7 @@
                 <path d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
             <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">
-                <span class="text-xl font-bold text-blue-500">movie count</span> Movies in Database
+                <span class="text-xl font-bold text-blue-500">Количество фильмов</span> {{ statistic.movieCount }}
             </div>
         </div>
     </div>
@@ -52,7 +57,7 @@
                 </path>
             </svg>
             <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">
-                <span class="text-xl font-bold text-blue-500">series count</span> Series in Database
+                <span class="text-xl font-bold text-blue-500">Количество оценок</span> {{ statistic.ratingCount }}
             </div>
         </div>
     </div>
@@ -66,7 +71,7 @@
                 </path>
             </svg>
             <div class="ml-4 text-lg text-gray-600 leading-7 font-semibold">
-                <span class="text-xl font-bold text-blue-500">actor count</span> Casts in Database
+                <span class="text-xl font-bold text-blue-500">Количестао комментариев</span> {{ statistic.commentCount }}
             </div>
         </div>
     </div>

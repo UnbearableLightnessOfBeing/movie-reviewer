@@ -27,14 +27,14 @@ const emits = defineEmits('update:sidebarOpen');
                       fill="white" />
               </svg>
 
-              <span class="text-white text-2xl mx-2 font-semibold">Dashboard</span>
+              <span class="text-white text-2xl mx-2 font-semibold">Панель администратора</span>
           </div>
       </div>
 
       <nav class="mt-10">
-          <Link class="flex items-center mt-4 py-2 px-6 bg-gray-700 bg-opacity-25 text-gray-100"
-              :href="route('admin.index')">
-              <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+          <Link class="flex items-center text-gray-500 mt-4 py-2 px-6 hover:bg-gray-700 hover:text-gray-100"
+              :href="route('admin.index')" :class="{ 'text-white bg-gray-800': $page.url === '/admin' }">
+              <svg class="h-6 w-6 " xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                       d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
@@ -42,11 +42,11 @@ const emits = defineEmits('update:sidebarOpen');
                       d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z" />
               </svg>
 
-              <span class="mx-3 text-white">Главная</span>
+              <span class="mx-3 ">Главная</span>
             </Link>
 
           <Link class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-              :href="route('admin.movies.index')">
+              :href="route('admin.movies.index')" :class="{ 'text-white bg-gray-800': $page.url === '/admin/movies' }">
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -56,7 +56,7 @@ const emits = defineEmits('update:sidebarOpen');
               <span class="mx-3">Фильмы</span>
             </Link>
             <Link class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-              :href="route('admin.users.index')">
+              :href="route('admin.users.index')" :class="{ 'text-white bg-gray-800': $page.url === '/admin/users' }">
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -66,7 +66,7 @@ const emits = defineEmits('update:sidebarOpen');
               <span class="mx-3">Пользователи</span>
             </Link>
             <Link class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-              :href="route('admin.comments.index')">
+              :href="route('admin.comments.index')" :class="{ 'text-white bg-gray-800': $page.url === '/admin/comments' }">
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -76,7 +76,7 @@ const emits = defineEmits('update:sidebarOpen');
               <span class="mx-3">Комментарии</span>
             </Link>
             <Link class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-              :href="route('admin.genres.index')">
+              :href="route('admin.genres.index')" :class="{ 'text-white bg-gray-800': $page.url === '/admin/genres' }">
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -86,7 +86,7 @@ const emits = defineEmits('update:sidebarOpen');
               <span class="mx-3">Жанры</span>
             </Link>
             <Link class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-              :href="route('admin.actors.index')">
+              :href="route('admin.actors.index')" :class="{ 'text-white bg-gray-800': $page.url === '/admin/actors' }">
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -96,7 +96,7 @@ const emits = defineEmits('update:sidebarOpen');
               <span class="mx-3">Актёры</span>
             </Link>
             <Link class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-              :href="route('admin.countries.index')">
+              :href="route('admin.countries.index')" :class="{ 'text-white bg-gray-800': $page.url === '/admin/countries' }">
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -106,7 +106,7 @@ const emits = defineEmits('update:sidebarOpen');
               <span class="mx-3">Страны</span>
             </Link>
             <Link class="flex items-center mt-4 py-2 px-6 text-gray-500 hover:bg-gray-700 hover:bg-opacity-25 hover:text-gray-100"
-              :href="route('admin.ratings.index')">
+              :href="route('admin.ratings.index')" :class="{ 'text-white bg-gray-800': $page.url == '/admin/ratings' }">
               <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                   stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -115,7 +115,6 @@ const emits = defineEmits('update:sidebarOpen');
 
               <span class="mx-3">Рейтинги</span>
             </Link>
-
       </nav>
   </div>
 </template>

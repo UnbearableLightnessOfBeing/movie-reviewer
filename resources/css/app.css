@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer components {
+    .movie-card {
+        @apply rounded-lg border w-64 h-80 border-secondary bg-transparent shadow-2xl;
+    }
+
+    .movie-card:hover .genre {
+        height: fit-content;
+    }
+
+    .age-badge {
+        @apply border border-white bg-black bg-opacity-40 px-[2px] rounded text-white;
+    }
+
+}

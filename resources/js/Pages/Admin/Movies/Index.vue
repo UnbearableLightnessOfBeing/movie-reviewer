@@ -104,7 +104,7 @@ const props = defineProps(['movies', 'movieRatings', 'filters', 'notifs']);
                             {{ movieRatings.find(rating => +rating.movieId === +tableProps.item.id).count }}
                         </td>
                         <td class="py-1 border max-w-[100px]">
-                            <img    :src="tableProps.item.avatar? $page.props.ziggy.url + '/storage/' + 
+                            <img    :src="tableProps.item.poster? $page.props.ziggy.url + '/storage/' + 
                                     tableProps.item.poster : $page.props.ziggy.url + '/storage/images/posters/no-image.jpg'" 
                                     width="100" class="mx-auto rounded-md overflow-hedden" alt="poster">
                         </td>

@@ -9,6 +9,10 @@ use App\Http\Controllers\RatingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use App\Models\User;
+use App\Models\Movie;
+use App\Models\Rating;
+use App\Models\Commetn;
 
 
 /*
@@ -34,9 +38,9 @@ Route::get('/', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/movies', function () {
-    if(auth()->user()) {
-        auth()->user()->assignRole('admin');
-    }
+    // if(auth()->user()) {
+    //     auth()->user()->assignRole('admin');
+    // }
     return Inertia::render('Dashboard', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
@@ -46,7 +50,15 @@ Route::get('/movies', function () {
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function() {
     Route::get('/', function() {
-        return Inertia::render('Admin/Index');
+        return Inertia::render('Admin/Index' ,[
+            'statistic' => [
+                'userCount' => count(User::all()),
+                'movieCount' => count(Movie::all()),
+                'ratingCount' => count(Rating::all()),
+                'commentCount' => count(Commetn::all()),
+            ],
+            'blabal' => 'asdkfj'
+        ]);
     })->name('index');
     Route::resource('/movies', \App\Http\Controllers\Admin\MovieController::class);
     Route::resource('/genres', \App\Http\Controllers\Admin\GenreController::class);
@@ -96,6 +108,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::post('/avatar', [AvatarController::class, 'update'])->name('avatar.update');
     Route::post('/admin-avatar', [\App\Http\Controllers\Admin\AvatarController::class, 'update'])->name('admin.avatar.update');
+    Route::post('/admin-poster', [\App\Http\Controllers\Admin\PosterController::class, 'update'])->name('admin.poster.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
