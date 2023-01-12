@@ -13,7 +13,7 @@ class UpdateMovieRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->user()->hasRole('admin');
     }
 
     /**
@@ -24,7 +24,24 @@ class UpdateMovieRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'duration' => ['required', 'integer', 'max:999'],
+            'release_date' => ['required', 'date'],
+            'production' => ['required', 'max:100'],
+            'restriction' => ['required'],
+            'description' => ['sometimes', 'max:5000']
+        ];
+    }
+
+    public function messages() {
+
+        return [
+            'required' => 'Поле необходимо заполнить',
+            'unique' => 'Такой жанр уже добавлен',
+            'integer' => 'Введите число',
+            'date' => 'Введите дату',
+            'duration.max' => 'Число должно быть меньше четырехзначного',
+            'title.max' => 'Слишком длинное название',
+            'production.max' => 'Слишком длинное название'
         ];
     }
 }

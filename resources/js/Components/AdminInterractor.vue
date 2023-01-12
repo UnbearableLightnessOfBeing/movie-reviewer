@@ -7,7 +7,7 @@ import { defineProps, ref, watch } from 'vue';
 
 // const props = defineProps(['items', 'filters', 'notifs', 'routeName']);
 const props = defineProps({
-    items: Array,
+    items: [Array , Object],
     filters: Object,
     notifs: Object,
     routeName: String,
@@ -22,7 +22,11 @@ const props = defineProps({
     deletable: {
         type: Boolean,
         default: true,
-    }
+    },
+    editable: {
+        type: Boolean,
+        default: true,
+    },
 });
 
 const emits = defineEmits(['update:watchedItem']);
@@ -112,7 +116,7 @@ function fireConfirmation(itemId) {
                 </thead>
                 <tbody class="bg-white">
                         <tr class="text-gray-700"
-                            v-for="item in items" :key="item.id">
+                            v-for="item in items.data" :key="item.id">
                             <slot name="table" :item="item">
                                 <td class="px-4 py-3 border w-full">
                                     item example
@@ -121,7 +125,7 @@ function fireConfirmation(itemId) {
                             <td class="px-4 py-3 text-sm border w-fit flex gap-2">
                                 <button v-if="watchable" @click="$emit('update:watchedItem', item.id)" 
                                     class="bg-indigo-500 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">Посмотреть</button>
-                                <Link :href="route('admin.'+ routeName +'.edit', { id: item.id })"
+                                <Link v-if="editable" :href="route('admin.'+ routeName +'.edit', { id: item.id })"
                                     class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg p-auto">Редактировать</Link>
                                 <button v-if="deletable" @click="fireConfirmation(item.id)" 
                                     class="bg-red-500 hover:bg-red-700 text-white px-4 py-2 rounded-lg">Удалить</button>

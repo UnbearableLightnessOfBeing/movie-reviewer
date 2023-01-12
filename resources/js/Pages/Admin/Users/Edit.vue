@@ -50,7 +50,7 @@ function submitAvatar(image) {
             </h1>
             <Head title="Редактировать пользователя" />
         </template>
-        <form encript="multipart/form-data" @submit.prevent="avatarForm.post(route('admin.avatar.update'), { preserveScroll: true })">
+        <!-- <form encript="multipart/form-data" @submit.prevent="avatarForm.post(route('admin.avatar.update'), { preserveScroll: true })">
                 <div class="flex flex-col gap-6">
                     <div>
                         <InputLabel for="avatar" class="block w-full text-sm font-medium text-gray-700">Аватар профиля: </InputLabel>
@@ -69,13 +69,36 @@ function submitAvatar(image) {
                         <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                             {{ form.progress.percentage }}%
                         </progress>
-                        <!-- <input @change="form.avatar = e.target.files[0]" required type="file"
-                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md" /> -->
                         <InputError :message="form.errors.avatar" class="mt-2" />
                         <button>submit</button>
                     </div>
                 </div>
-            </form>
+            </form> -->
+        <AdminEdit :isPost="true" routeName="avatar" :form="avatarForm" :item="user">
+            <template v-slot:inputs>
+                <div class="flex flex-col gap-6">
+                    <div>
+                        <InputLabel for="avatar" class="block w-full text-sm font-medium text-gray-700">Аватар профиля: </InputLabel>
+                        <img    :src="props.user.avatar? $page.props.ziggy.url + '/storage/' + 
+                                props.user.avatar : getAvatarSource(props.user.name)" 
+                                width="100" class="rounded-md overflow-hedden" alt="avatar">
+                        <input
+                            id="avatar"
+                            name="avatar"
+                            type="file"
+                            @input="avatarForm.avatar = $event.target.files[0]"
+                            accept="image/*"
+                            class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                            capture
+                        />
+                        <progress v-if="form.progress" :value="form.progress.percentage" max="100">
+                            {{ form.progress.percentage }}%
+                        </progress>
+                        <InputError :message="form.errors.avatar" class="mt-2" />
+                    </div>
+                </div>
+            </template>
+        </AdminEdit>
         <AdminEdit routeName="users" :form="form" :item="user">
             <template v-slot:inputs>
                 <div class="flex flex-col gap-6">

@@ -40,4 +40,13 @@ class Movie extends Model
     public function ratings() {
         return $this->hasMany(Rating::class);
     }
+
+    public function updateAttachment(String $relationship, Array $ids) {
+        if(count($ids)) {
+            $this->$relationship()->attach($ids);
+        }
+        else {
+            $this->$relationship()->sync([]);
+        }
+    }
 }

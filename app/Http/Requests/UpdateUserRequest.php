@@ -24,9 +24,10 @@ class UpdateUserRequest extends FormRequest
      */
     public function rules()
     {
+        // dd($this->id);
         return [
-            'name' => ['required', 'unique:users,name'],
-            'isAdmin' => ['required']
+            // 'name' => ['required', Rule::unique('users')->ignore($this->user()->id, 'id')],
+            // 'isAdmin' => ['required']
         ];
     }
 

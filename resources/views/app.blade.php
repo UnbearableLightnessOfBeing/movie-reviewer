@@ -8,6 +8,7 @@
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+        <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.6/dist/vue-multiselect.min.css">
 
         <!-- Scripts -->
         {{-- <script src="https://unpkg.com/vue-star-rating@next/dist/VueStarRating.umd.min.js"></script> --}}

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -84,6 +85,15 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
+        $validated = $request->validate([
+            'name' => ['required', Rule::unique('users')->ignore(User::find($id)->id, 'id')],
+            'isAdmin' => ['required']
+        ], [
+            'required' => 'Поле необходимо заполнить',
+            'unique' => 'Пользователь с таким именем уже добавлен',
+        ]);
+
+
         $user = User::find($id);
 
         $user->name = $request->input('name');

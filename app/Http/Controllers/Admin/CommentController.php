@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Commetn;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,9 +14,22 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return Inertia::render('Admin/Comments');
+        // return Inertia::render('Admin/Comments/Index');
+
+        $perPage = $request->query('perPage') ?? 5;
+
+        return Inertia::render('Admin/Comments/Index', [
+            'comments' => Commetn::query()
+                            ->when($request->input('search'), function($query, $search) {
+                                $query->where('text', 'like', "%{$search}%");
+                            })
+                            ->with('movie', 'user')
+                            ->paginate($perPage)
+                            ->withQueryString(),
+            'filters' => $request->only(['search', 'perPage']),
+        ]);
     }
 
     /**
@@ -81,6 +95,8 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Commetn::find($id)->delete();
+
+        return redirect(route('admin.comments.index'));
     }
 }
