@@ -21,7 +21,7 @@ const props = defineProps({
 </script>
 
 <template>
-    <div class="py-6">
+    <div class="py-0">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <section class="container mx-auto p-6 font-mono">
                 <section class="flex content-center">

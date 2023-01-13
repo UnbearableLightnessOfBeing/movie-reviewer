@@ -38,6 +38,7 @@ class MovieController extends Controller
                 'genres' => $movie->genres->map(function($genre) {
                     return $genre->title;
                 }),
+                'rating' => $movie->getAvgRating(),
             ];
         });
     }
@@ -63,6 +64,7 @@ class MovieController extends Controller
         //
     }
 
+
     /**
      * Display the specified resource.
      *
@@ -87,17 +89,7 @@ class MovieController extends Controller
         }
 
         // calculate movie rating
-        $numerator = $movie->ratings->reduce(function($cv, $rating) {
-                return $cv + $rating->rating;
-            });
-        $denominator = $movie->ratings->count(); 
-
-        if($denominator === 0) {
-            $rating = null;
-        }
-        else {
-            $rating = $numerator / $denominator;
-        }
+        $rating = $movie->getAvgRating();
 
         return [
             'id' => $movie->id,

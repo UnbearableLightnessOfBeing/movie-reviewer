@@ -9,6 +9,9 @@ import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 
 import StarRating from "vue-star-rating";
 
+import VueVideoPlayer from '@videojs-player/vue'
+import 'video.js/dist/video-js.css'
+
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 
@@ -19,6 +22,7 @@ createInertiaApp({
         return createApp({ render: () => h(app, props) })
             .use(plugin)
             .use(ZiggyVue, Ziggy)
+            .use(VueVideoPlayer)
             .component("star-rating", StarRating)
             .mount(el);
     },

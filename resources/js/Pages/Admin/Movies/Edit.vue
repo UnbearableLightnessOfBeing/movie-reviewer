@@ -7,7 +7,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PopupSuccess from '@/Components/PopupSuccess.vue';
 import AdminEdit from '@/Components/AdminEdit.vue';
 import Checkbox from '@/Components/Checkbox.vue';
-import { defineProps } from 'vue';
+import { defineProps, ref } from 'vue';
 
 import VueMultiselect from 'vue-multiselect';
 
@@ -38,6 +38,18 @@ const posterForm = useForm({
     movieId: props.movie.id
 });
 
+const trailerForm = useForm({
+    trailer: null,
+    movieId: props.movie.id
+});
+
+const trailerPosterForm = useForm({
+    poster: null,
+    movieId: props.movie.id
+});
+
+let showTrailer = ref(false);
+
 </script>
 
 <template>
@@ -49,6 +61,67 @@ const posterForm = useForm({
             </h1>
             <Head title="Редактировать фильм" />
         </template>
+
+            <div class="py-0">
+                <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <section class="container mx-auto p-6 font-mono">
+                        <section class="flex content-center">
+                            <div  v-if="showTrailer" class="w-full md:w-1/2">
+                                <div class="shadow overflow-hidden sm:rounded-md">
+                                    <div class="px-4 py-5 flex flex-col gap-5 bg-white sm:p-6">
+                                        <div class="grid grid-cols-6 gap-6">
+                                            <div class="col-span-6 sm:col-span-6">
+                                                <div class="flex flex-col gap-4">
+                                                    <video-player
+                                                        :src="$page.props.ziggy.url + '/storage/' + movie.trailer"
+                                                        :poster="$page.props.ziggy.url + '/storage/' + movie.trailer_poster"
+                                                        width="350"
+                                                        controls
+                                                        :loop="true"
+                                                        :volume="0.6"
+                                                        @mounted=""
+                                                        @ready=""
+                                                        @play=""
+                                                        @pause=""
+                                                        @ended=""
+                                                        @seeking=""
+                                                    />
+                                                    <form class="flex flex-col gap-2" @submit.prevent="trailerPosterForm.post(route('admin.trailer.update', { _method: 'put' }))">
+
+                                                        <!-- <img    :src="props.movie.trailer_poster? $page.props.ziggy.url + '/storage/' + 
+                                                                props.movie.trailer_poster : $page.props.ziggy.url + '/storage/images/posters/no-image.jpg'" 
+                                                                width="200" class="rounded-md overflow-hedden" alt="avatar"> -->
+
+                                                        <InputLabel for="trailerPoster" class="block w-full text-sm font-medium text-gray-700">Постер к трейлеру: </InputLabel>
+                                                        <input class="block" type="file" @input="trailerPosterForm.poster = $event.target.files[0]" />
+                                                        <InputError :message="trailerPosterForm.errors.poster" class="mt-2" />
+                                                        <button class="bg-indigo-500 hover:bg-indigo-700 h-[40px] self-end text-white px-4 py-2 rounded-lg">Сохранить</button>
+                                                    </form>
+                                                    <form class="flex flex-col gap-2" @submit.prevent="trailerForm.post(route('admin.trailer.update', { _method: 'put' }))">
+                                                        <InputLabel for="trailer" class="block w-full text-sm font-medium text-gray-700">Трейлер: </InputLabel>
+                                                        <input class="block" type="file" @input="trailerForm.trailer = $event.target.files[0]" />
+                                                        <InputError :message="trailerForm.errors.trailer" class="mt-2" />
+                                                        <progress v-if="trailerForm.progress" :value="trailerForm.progress.percentage" max="100">
+                                                        {{ trailerForm.progress.percentage }}%
+                                                        </progress>
+                                                        <button class="bg-indigo-500 hover:bg-indigo-700 h-[40px] self-end text-white px-4 py-2 rounded-lg">Сохранить</button>
+                                                    </form>
+                                                    <i @click="showTrailer=false" class="px-4 py-2 border-2 w-fit self-start transition-all duration-200 rounded-full text-gray-500 font-bold border-indigo-500 
+                                                                bg-indigo-400 hover:cursor-pointer bg-opacity-50 hover:bg-opacity-100 hover:text-white">Свернуть</i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                    <i v-if="!showTrailer" @click="showTrailer=true"  class="px-4 py-2 mt-16 border-2 w-fit self-end rounded-full text-gray-500 
+                                                font-bold border-indigo-500 bg-indigo-400 hover:cursor-pointer bg-opacity-50 
+                                                hover:bg-opacity-100 hover:text-white transition-all duration-200">Нажмите, чтобы загрузить трейлер для фильма</i>
+                        </section>
+                    </section>
+                </div>
+            </div>
+
         <AdminEdit :isPost="true" routeName="poster" :form="posterForm" :item="movie">
             <template v-slot:inputs>
                 <div class="flex flex-col gap-6">

@@ -109,6 +109,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/avatar', [AvatarController::class, 'update'])->name('avatar.update');
     Route::post('/admin-avatar', [\App\Http\Controllers\Admin\AvatarController::class, 'update'])->name('admin.avatar.update');
     Route::post('/admin-poster', [\App\Http\Controllers\Admin\PosterController::class, 'update'])->name('admin.poster.update');
+    Route::put('/admin-trailer', [\App\Http\Controllers\Admin\TrailerController::class, 'update'])->name('admin.trailer.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

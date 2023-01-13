@@ -23,7 +23,9 @@
         "vue": "^3.2.41"
     },
     "dependencies": {
+        "@videojs-player/vue": "^1.0.0",
         "dayjs": "^1.11.7",
+        "video.js": "^7.20.3",
         "vue-multiselect": "^3.0.0-alpha.2",
         "vue-star-rating": "^2.1.0",
         "vue3-star-ratings": "^1.1.0"

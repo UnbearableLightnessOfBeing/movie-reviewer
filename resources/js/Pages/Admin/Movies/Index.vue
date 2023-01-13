@@ -73,7 +73,7 @@ const props = defineProps(['movies', 'movieRatings', 'filters', 'notifs']);
                     </div>
                     <div>
                         <strong class="text-xl">Постер к трейлеру</strong>
-                        <p class="text-md text-gray-300">{{ slotProps.item.posterTrailer? 'Присутствует' : 'Отсутствует' }}</p>
+                        <p class="text-md text-gray-300">{{ slotProps.item.trailer_poster? 'Присутствует' : 'Отсутствует' }}</p>
                     </div>
                     <div>
                         <strong class="text-xl">Описание</strong>

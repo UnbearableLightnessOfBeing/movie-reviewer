@@ -49,4 +49,22 @@ class Movie extends Model
             $this->$relationship()->sync([]);
         }
     }
+
+    //calculate movie rating 
+    public function getAvgRating() {
+
+        $numerator = $this->ratings->reduce(function($cv, $rating) {
+                return $cv + $rating->rating;
+            });
+        $denominator = $this->ratings->count(); 
+
+        if($denominator === 0) {
+            $rating = null;
+        }
+        else {
+            $rating = $numerator / $denominator;
+        }
+
+        return $rating;
+    }
 }
