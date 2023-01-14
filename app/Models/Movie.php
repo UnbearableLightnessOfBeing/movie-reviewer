@@ -67,4 +67,17 @@ class Movie extends Model
 
         return $rating;
     }
+
+    public function getFavoriteCount() {
+
+        return count((User::all()
+                ->load('favoriteMovies')
+                ->map(fn($user) => count($user->favoriteMovies->where('id', $this->id))))
+                ->filter(fn($count) => $count));
+    }
+
+    public function getCommentCount() {
+        $users = User::all();
+        return count($users->filter(fn($user) => count($user->comments->where('movie_id', $this->id))));
+    }
 }

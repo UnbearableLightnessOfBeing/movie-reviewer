@@ -114,6 +114,8 @@ class MovieController extends Controller
             'rating' => $rating,
             'ratingCount' => $movie->ratings->count(),
             'userRating' => $userRating,
+            'favoriteCount' => $movie->getFavoriteCount(),
+            'commentCount' => $movie->getCommentCount(),
         ];
     }
 

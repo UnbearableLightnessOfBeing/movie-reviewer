@@ -36,7 +36,7 @@ function doAction(isFavorite) {
 <template>
     <div>
         <form @submit.prevent="doAction(isFavorite)">
-            <PrimaryButton class="mt-4 disabled:opacity-60"> {{ !isFavorite? 'Добавить в избранное' : 'Удалить из избранного' }} </PrimaryButton>
+            <PrimaryButton :textColor="!isFavorite? 'text-teal-400' : 'text-pink-500'" class="disabled:opacity-60"> {{ !isFavorite? 'Добавить в избранное' : 'Удалить из избранного' }} </PrimaryButton>
         </form>
     </div>
 </template>
