@@ -29,10 +29,10 @@ const form = useForm({
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Profile Information</h2>
+            <h2 class="text-lg font-medium text-secondary">Редактировать профиль</h2>
 
-            <p class="mt-1 text-sm text-gray-600">
-                Update your account's profile information and email address.
+            <p class="mt-1 text-sm text-secondary">
+                Обновите информацию о своём профиле и почтовый адрес.
             </p>
         </header>
 
@@ -40,12 +40,12 @@ const form = useForm({
 
 
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel class="text-secondary" for="name" value="Name" />
 
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
+                    class="mt-1 bg-primary text-white block w-full"
                     v-model="form.name"
                     required
                     autofocus
@@ -56,12 +56,12 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel class="text-secondary" for="email" value="Email" />
 
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
+                    class="mt-1 bg-primary text-white block w-full"
                     v-model="form.email"
                     required
                     autocomplete="email"
@@ -92,7 +92,7 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton class="border border-secondary" :disabled="form.processing">Сохранить</PrimaryButton>
 
                 <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" class="transition ease-in-out">
                     <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Saved.</p>

@@ -37,7 +37,7 @@ const editing = ref(false);
                     <img :src="comment.user.avatar? $page.props.ziggy.url + '/storage/' + comment.user.avatar : getAvatarSource(comment.user.name)" 
                             width="40" class="inline mr-2 rounded-full overflow-hedden" alt="avatar">
 
-                    <span class="text-gray-800" :class="{'text-secondary font-bold': $page.props.auth.user && comment.user.id === $page.props.auth.user.id}">{{ comment.user.name }}</span>
+                    <span class="text-gray-300 font-black" :class="{'text-secondary font-bold': $page.props.auth.user && comment.user.id === $page.props.auth.user.id}">{{ comment.user.name }}</span>
                     <small class="ml-2 text-sm text-gray-300">{{ dayjs(comment.created_at).fromNow() }}</small>
                     <small v-if="comment.created_at !== comment.updated_at" class="text-sm text-gray-300"> &middot; изменено</small>
                 </div>

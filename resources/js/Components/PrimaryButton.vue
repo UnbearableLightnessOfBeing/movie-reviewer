@@ -6,8 +6,8 @@ defineProps({
     },
     textColor: {
         type: String,
-        default: '123'
-    }
+        default: ''
+    },
 });
 </script>
 

@@ -18,18 +18,18 @@ const form = useForm({
 <template>
     <section>
         <header>
-            <h2 class="text-lg font-medium text-gray-900">Фотография профиля</h2>
+            <h2 class="text-lg font-medium text-secondary">Фотография профиля</h2>
 
-            <p class="mt-1 text-sm text-gray-600">
+            <p class="mt-1 text-sm text-secondary">
                 Сменить фотографию пользователя
             </p>
         </header>
         <form encript="multipart/form-data" @submit.prevent="form.post(route('avatar.update'))" class="mt-6 space-y-6">
-            <InputLabel for="avatar" value="Avatar" />
             <div class="mt-1 flex gap-3 items-end w-full">
                 <img    :src="$page.props.auth.user.avatar? $page.props.ziggy.url + '/storage/' + $page.props.auth.user.avatar : getAvatarSource(user.name)" 
                         width="80" class="mr-2 rounded-full overflow-hedden" alt="avatar">
                 <input
+                    class="text-secondary bg-primary"
                     id="avatar"
                     name="avatar"
                     type="file"
@@ -43,7 +43,7 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.avatar" />
             </div>
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton :textColor="'bg-primary'" class="border border-secondary" :disabled="form.processing">Сохранить</PrimaryButton>
             </div>
         </form>
     </section>
