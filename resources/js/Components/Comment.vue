@@ -67,7 +67,7 @@ const editing = ref(false);
             </div>
              <form v-if="editing" @submit.prevent="form.put(route('comments.update', comment.id), { onSuccess: () => editing = false, preserveScroll: true })">
                 <textarea v-model="form.text" class="mt-4 w-full text-white border-gray-400 focus:border-indigo-300 
-                            focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm bg-primarylight"></textarea>
+                            focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm bg-primary"></textarea>
                 <InputError :message="form.errors.text" class="mt-2" />
                 <div class="space-x-2">
                     <PrimaryButton class="mt-4 border border-secondary">Сохранить</PrimaryButton>

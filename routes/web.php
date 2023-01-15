@@ -11,8 +11,11 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Models\User;
 use App\Models\Movie;
+use App\Models\Genre;
+use App\Models\Actor;
 use App\Models\Rating;
 use App\Models\Commetn;
+use Illuminate\Http\Request;
 
 
 /*
@@ -37,14 +40,22 @@ Route::get('/', function () {
 //     return Inertia::render('Dashboard');
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/movies', function () {
+Route::get('/movies', function (Request $request) {
     // if(auth()->user()) {
     //     auth()->user()->assignRole('admin');
     // }
+
+    $search = $request->query('search') ?? '';
+    $searchGenre = $request->query('searchGenre') ?? '';
+    $searchActor = $request->query('searchActor') ?? '';
+
     return Inertia::render('Dashboard', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'movies' => MovieController::index(),
+        'movies' => MovieController::index($search, $searchGenre, $searchActor),
+        'genres' => Genre::all(['id', 'title']),
+        'actors' => Actor::all(['id', 'name']),
+        'filters' => $request->only(['search', 'searchGenre', 'searchActor']),
     ]);
 })->name('dashboard');
 
@@ -57,7 +68,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
                 'ratingCount' => count(Rating::all()),
                 'commentCount' => count(Commetn::all()),
             ],
-            'blabal' => 'asdkfj'
         ]);
     })->name('index');
     Route::resource('/movies', \App\Http\Controllers\Admin\MovieController::class);

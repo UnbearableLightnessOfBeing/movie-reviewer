@@ -15,9 +15,31 @@ class MovieController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public static function index()
+    public static function index($search, $searchGenre, $searchActor)
     {
-        return Movie::all()->map(function($movie) {
+        return Movie::
+                    query()
+                    ->when($search, function($query, $search) {
+                        $query->where('title', 'like', "%{$search}%");
+                    })
+                    ->get()->load('genres', 'actors')
+                    ->filter(function($movie) use ($searchGenre) {
+                        if(!$searchGenre) {
+                            return true;
+                        }
+                        $genres = $movie->genres;
+                        $count = count($genres->where('title', $searchGenre));
+                        return $count;
+                    })
+                    ->filter(function($movie) use ($searchActor) {
+                        if(!$searchActor) {
+                            return true;
+                        }
+                        $actors = $movie->actors;
+                        $count = count($actors->where('name', $searchActor));
+                        return $count;
+                    })
+                    ->map(function($movie) {
             return [
                 'id' => $movie->id,
                 'title' => $movie->title,

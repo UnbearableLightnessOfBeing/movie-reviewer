@@ -41,7 +41,6 @@ function updateState(state) {
 let isDescriptionFull = ref(false);
 let isPosterSeen = ref(true);
 
-
 </script>
 
 <template>

@@ -56,7 +56,6 @@ class MovieController extends Controller
             'filters' => $request->only(['search', 'perPage']),
             'movies' => $movies,
             'movieRatings' => $movieRatings,
-
         ]);
     }
 
