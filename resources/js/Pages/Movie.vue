@@ -83,10 +83,11 @@ let isPosterSeen = ref(true);
                 </div>
                 <div class="movie-info flex flex-col gap-4 lg:order-4 lg:w-1/2">
                     <div class="genres px-4 flex gap-4 ">
-                        <div v-for="genre in movie.genres" class="genre px-2 py-1 border border-white border-opacity-40
-                                    bg-black bg-opacity-30 hover:border-opacity-100 rounded-full flex-wrap">
+                        <Link :href="route('dashboard', { searchGenre: genre})" v-for="genre in movie.genres" 
+                            class="genre px-2 py-1 border border-white border-opacity-40
+                                bg-black bg-opacity-30 hover:border-opacity-100 rounded-full flex-wrap">
                             {{ genre }}
-                        </div>
+                        </Link>
                     </div>
                     <div class="desc px-4 font-semibold text-lg">
                         <div v-if="movie.description && movie.description.length > 200 && !isDescriptionFull">
@@ -115,7 +116,7 @@ let isPosterSeen = ref(true);
                     <div class="avg flex lg:flex-wrap items-center lg:justify-center lg:h-fit gap-2">
                         <div class="hidden lg:block lg:w-full font-bold text-secondary text-center text-lg">Рейтинг</div>
                         <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" class="ipc-icon ipc-icon--star-inline" id="iconContext-star-inline" viewBox="0 0 24 24" fill="yellow" role="presentation"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>
-                        <p class="text-sm text-gray-400"><span class="font-black text-white text-lg">{{ movie.rating? movie.rating : 0 }}</span>/10 - {{ movie.ratingCount }} оценок</p>
+                        <p class="text-sm text-gray-400"><span class="font-black text-white text-lg">{{ movie.rating? movie.rating.toFixed(1) : '0.0' }}</span>/10 - {{ movie.ratingCount }} оценок</p>
                     </div>
                     <!-- <div v-if="!movie.userRating" @click="isBeingRated = true;" 
                                 class="your-estim flex itmes-end lg:items-center justify-end gap-2 p-2 rounded-md hover:bg-black border

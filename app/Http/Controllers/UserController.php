@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Movie;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -16,6 +17,12 @@ class UserController extends Controller
 
         $movie = Movie::find($request->movieId);
         $request->user()->favoriteMovies()->attach($movie);
+
+        Log::channel('db')->info('Пользователь ' . $request->user()->name . ' добавил в избранное фильм ' . $movie->title . '.', [
+            'user' => $request->user(),
+            'movie' => $movie
+        ]);
+
         return redirect(route('movie.show', ['id' => $movie->id]));
     }
 
@@ -23,6 +30,12 @@ class UserController extends Controller
 
         $movie = Movie::find($request->movieId);
         $request->user()->favoriteMovies()->detach($movie);
+
+        Log::channel('db')->info('Пользователь ' . $request->user()->name . ' уалил из избранного фильм ' . $movie->title . '.', [
+            'user' => $request->user(),
+            'movie' => $movie
+        ]);
+
         return redirect(route('movie.show', ['id' => $movie->id]));
     }
 

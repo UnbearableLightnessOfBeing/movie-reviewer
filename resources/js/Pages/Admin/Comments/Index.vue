@@ -6,8 +6,6 @@ import { defineProps, ref } from 'vue';
 import dayjs from 'dayjs';
 import ru from 'dayjs/locale/ru';
 
-import { getAvatarSource } from '@/Utils/utils'; 
-
 dayjs.locale(ru);
 
 let watchedComment = ref(1);

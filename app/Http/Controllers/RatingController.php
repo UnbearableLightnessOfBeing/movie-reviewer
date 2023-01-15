@@ -7,6 +7,7 @@ use App\Models\Movie;
 use App\Models\User;
 use App\Http\Requests\StoreRatingRequest;
 use App\Http\Requests\UpdateRatingRequest;
+use Illuminate\Support\Facades\Log;
 
 class RatingController extends Controller
 {
@@ -39,15 +40,23 @@ class RatingController extends Controller
     public function store(StoreRatingRequest $request)
     {
         $movieId = $request->input('movieId');
+        $movie = Movie::find($movieId);
 
         // the condition checks if the user has already rated the movie
         if(count(User::find($request->user()->id)->ratings->where('movie_id', $movieId)) === 0) {
             $ratingRecord = new Rating();
             $ratingRecord->fill($request->validated());
-            $ratingRecord->movie()->associate(Movie::find($movieId));
+            $ratingRecord->movie()->associate($movie);
             $ratingRecord->user()->associate(User::find($request->user()->id));
             $ratingRecord->save();
+
+            Log::channel('db')->info('Пользователь ' . $request->user()->name . 
+            ' оценил фильм ' . $movie->title . ' оценкой ' . $request->rating . '.', [
+                'user' => $request->user(),
+                'movie' => $movie,
+            ]);
         }
+
 
         return redirect(route('movie.show', ['id' => $movieId]));
     }
@@ -86,10 +95,17 @@ class RatingController extends Controller
         $this->authorize('update', $rating);
 
         $movieId = $rating->movie->id;
+        $movie = Movie::find($movieId);
 
         $validated = $request->validated();
 
         $rating->update($validated);
+
+        Log::channel('db')->info('Пользователь ' . $request->user()->name . 
+        ' изменил оценку к фильмy ' . $movie->title . ' на ' . $request->rating . '.', [
+            'user' => $request->user(),
+            'movie' => $movie,
+        ]);
 
         return redirect(route('movie.show', ['id' => $movieId]));
     }

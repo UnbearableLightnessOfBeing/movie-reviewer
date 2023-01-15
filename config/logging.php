@@ -3,6 +3,7 @@
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
+use Yoeriboven\LaravelLogDb\DatabaseLogger;
 
 return [
 
@@ -116,6 +117,11 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'db' => [
+            'driver' => 'custom',
+            'via'    => DatabaseLogger::class,
         ],
     ],
 

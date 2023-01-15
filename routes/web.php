@@ -5,7 +5,6 @@ use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommetnController;
-use App\Http\Controllers\RatingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,7 +15,7 @@ use App\Models\Actor;
 use App\Models\Rating;
 use App\Models\Commetn;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -75,7 +74,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('/countries', \App\Http\Controllers\Admin\CountryController::class);
     Route::resource('/actors', \App\Http\Controllers\Admin\ActorController::class);
     Route::resource('/comments', \App\Http\Controllers\Admin\CommentController::class);
-    Route::resource('/ratings', \App\Http\Controllers\Admin\RatingController::class);
+    Route::resource('/actions', \App\Http\Controllers\Admin\ActionController::class);
     Route::resource('/users', \App\Http\Controllers\Admin\UserController::class);
     // Route::resource('/avatar', \App\Http\Controllers\Admin\AvatarController::class);
 
@@ -94,10 +93,6 @@ Route::get('/movies/{id}', function ($id) {
 
 Route::resource('comments', CommetnController::class)
 ->only(['store', 'update', 'destroy'])
-->middleware(['auth', 'verified']);
-
-Route::resource('ratings', RatingController::class)
-->only(['store', 'update' ])
 ->middleware(['auth', 'verified']);
 
 Route::post('user', [UserController::class, 'storeInFavorite'])

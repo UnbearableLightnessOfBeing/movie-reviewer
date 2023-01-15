@@ -61,6 +61,7 @@ class MovieController extends Controller
                     return $genre->title;
                 }),
                 'rating' => $movie->getAvgRating(),
+                'isFavorite' => UserController::movieIsFavorite($movie->id),
             ];
         });
     }

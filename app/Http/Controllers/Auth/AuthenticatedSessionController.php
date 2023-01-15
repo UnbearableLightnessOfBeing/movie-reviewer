@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Log;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -34,6 +35,11 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
+        Log::channel('db')->info('Пользователь ' . Auth::user()->name . 
+        ' авторизовался на сайте ', [
+            'user' => Auth::user(),
+        ]);
+
         return redirect()->intended(RouteServiceProvider::HOME);
     }
 
@@ -42,11 +48,18 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        Log::channel('db')->info('Пользователь ' . $user->name . 
+        ' разлогинился на сайте ', [
+            'user' => $user,
+        ]);
 
         return redirect('/');
     }

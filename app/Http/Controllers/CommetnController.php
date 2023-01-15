@@ -7,6 +7,7 @@ use App\Models\Movie;
 use App\Models\User;
 use App\Http\Requests\StoreCommetnRequest;
 use App\Http\Requests\UpdateCommetnRequest;
+use Illuminate\Support\Facades\Log;
 
 class CommetnController extends Controller
 {
@@ -39,15 +40,22 @@ class CommetnController extends Controller
     public function store(StoreCommetnRequest $request)
     {
         $movieId = $request->input('movieId');
+        $movie = Movie::find($movieId);
 
         // dd(User::find($request->user()->id), Movie::find($movieId));
 
         $comment = new Commetn();
         $comment->fill($request->validated());
-        $comment->movie()->associate(Movie::find($movieId));
+        $comment->movie()->associate($movie);
         $comment->user()->associate(User::find($request->user()->id));
         $comment->save();
 
+        Log::channel('db')->info('Пользователь ' . $request->user()->name . 
+        ' оставил комментарий к фильму ' . $movie->title . '.', [
+            'user' => $request->user(),
+            'movie' => $movie,
+            'comment' => $comment,
+        ]);
 
         return redirect(route('movie.show', ['id' => $movieId]));
     }
@@ -86,10 +94,18 @@ class CommetnController extends Controller
         $this->authorize('update', $comment);
 
         $movieId = $comment->movie->id;
+        $movie = Movie::find($movieId);
 
         $validated = $request->validated();
 
         $comment->update($validated);
+
+        Log::channel('db')->info('Пользователь ' . $request->user()->name . 
+        ' редактировал комментарий к фильму ' . $movie->title . '.', [
+            'user' => $request->user(),
+            'movie' => $movie,
+            'comment' => $comment,
+        ]);
 
         return redirect(route('movie.show', ['id' => $movieId]));
     }

@@ -6,6 +6,7 @@ import { Inertia } from '@inertiajs/inertia';
 import VueMultiselect from 'vue-multiselect';
 
 import { getImgUrl, getPoster } from '@/Utils/utils';
+import PrimaryButton from '@/Components/PrimaryButton.vue';
 
 const props = defineProps({
     movies: Array,
@@ -17,6 +18,12 @@ const props = defineProps({
 let search = ref(props.filters.search ?? '');
 let searchGenre = ref(props.filters.searchGenre ?? '');
 let searchActor = ref(props.filters.searchActor ?? '');
+
+function clearFilters() {
+    search.value = '';
+    searchGenre.value = '';
+    searchActor.value = '';
+}
 
 let queryFilters = ref({
     search: search.value, 
@@ -59,9 +66,12 @@ watch(searchActor, (value) => {
         <div class="bg-primary py-6">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="bg-primarylight overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="text-secondary mt-6 w-fit mx-auto text-xl font-bold">
+                        Поиск:
+                    </div>
                     <div class="search-pnel p-6 flex flex-wrap gap-4 mx-auto w-fit">
                         <div class="search-by-name space-y-2">
-                            <label class="text-secondary ">Сортировка по названию</label>
+                            <label class="text-secondary ">по названию:</label>
                             <div class="search-by-name relative">
                                 <div class="absolute flex items-center ml-2 h-full">
                                     <svg class="w-4 h-4 fill-current text-white" viewBox="0 0 16 16" fill="none"
@@ -78,7 +88,7 @@ watch(searchActor, (value) => {
                             </div>
                         </div>
                         <div class="seach-by-genre space-y-2">
-                            <label class="text-secondary">Сортировка по жанру</label>
+                            <label class="text-secondary">по жанру:</label>
                             <VueMultiselect v-model="searchGenre"
                                             :options="genres.map(genre => genre.title)" 
                                             :option-height="46"
@@ -102,7 +112,7 @@ watch(searchActor, (value) => {
                             </VueMultiselect>
                         </div>
                         <div class="seach-by-genre space-y-2">
-                            <label class="text-secondary">Сортировка по актеру</label>
+                            <label class="text-secondary">по актеру:</label>
                             <VueMultiselect v-model="searchActor"
                                             :options="actors.map(actor => actor.name)" 
                                             :option-height="46"
@@ -124,11 +134,11 @@ watch(searchActor, (value) => {
                                     </div>
                                 </template>
                             </VueMultiselect>
-                            <!-- <pre>
-                                {{ filters }}
-                                {{ searchGenre }}
-                            </pre> -->
                         </div>
+                        <PrimaryButton @click="clearFilters"
+                            class="border border-secondary h-fit self-end">
+                            Сбросить
+                        </PrimaryButton>
                     </div>
 
 
@@ -156,14 +166,15 @@ watch(searchActor, (value) => {
                                         >
                                     <img :src="getPoster(movie)" class="absolute group-hover:scale-110 ease-in-out duration-300 w-full h-full object-cover -z-15">
                                     <div  class="card-foreground bg-secondary bg-opacity-80 w-full flex flex-col justify-center
-                                                text-center text-white py-4 gap-4 z-10">
+                                                text-center text-white py-4 gap-2 z-10">
                                         <div class="age-badge absolute top-4 right-4 ">
                                             {{ movie.restriction }}
                                         </div>
                                         <div v-if="movie.rating" class="flex gap-2 rating absolute top-0 left-0 p-2 m-1 rounded-xl bg-black bg-opacity-30 ">
+                                            <svg v-if="movie.isFavorite" width="24" height="24" fill="yellow"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M336 0h-288C21.49 0 0 21.49 0 48v431.9c0 24.7 26.79 40.08 48.12 27.64L192 423.6l143.9 83.93C357.2 519.1 384 504.6 384 479.9V48C384 21.49 362.5 0 336 0zM336 452L192 368l-144 84V54C48 50.63 50.63 48 53.1 48h276C333.4 48 336 50.63 336 54V452z"/></svg>
                                             <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg" class="ipc-icon ipc-icon--star-inline" id="iconContext-star-inline" viewBox="0 0 24 24" fill="yellow" role="presentation"><path d="M12 20.1l5.82 3.682c1.066.675 2.37-.322 2.09-1.584l-1.543-6.926 5.146-4.667c.94-.85.435-2.465-.799-2.567l-6.773-.602L13.29.89a1.38 1.38 0 0 0-2.581 0l-2.65 6.53-6.774.602C.052 8.126-.453 9.74.486 10.59l5.147 4.666-1.542 6.926c-.28 1.262 1.023 2.26 2.09 1.585L12 20.099z"></path></svg>
                                             <p class="text-lg font-bold text-gray-200">
-                                                {{ movie.rating }}
+                                                {{ movie.rating.toFixed(1) }}
                                             </p>
                                         </div>
                                         <h2 class="movie-title text-xl font-black text-primary">
@@ -174,6 +185,9 @@ watch(searchActor, (value) => {
                                         </p>
                                     </div>
                                 </Link>
+                            </div>
+                            <div v-if="movies.length === 0" class="no-movies text-secondary text-2xl font-bold mx-auto">
+                                Фильмов не найдено
                             </div>
                         </div>
                     </div>

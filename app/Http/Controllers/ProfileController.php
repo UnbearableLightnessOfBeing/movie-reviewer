@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Log;
 
 class ProfileController extends Controller
 {
@@ -38,6 +39,11 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
+        Log::channel('db')->info('Пользователь ' . $request->user()->name . 
+        ' редактировал профиль.', [
+            'user' => $request->user()
+        ]);
+
         return Redirect::route('profile.edit');
     }
 
@@ -54,10 +60,15 @@ class ProfileController extends Controller
 
         Auth::logout();
 
+        $userName = $user->name;
+
         $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        Log::channel('db')->info('Пользователь ' . $userName . 
+        ' удалил аккаунт.');
 
         return Redirect::to('/');
     }

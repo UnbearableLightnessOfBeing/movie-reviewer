@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
+use Illuminate\Support\Facades\Log;
 
 class RegisteredUserController extends Controller
 {
@@ -46,6 +47,11 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        Log::channel('db')->info('Пользователь ' . Auth::user()->name . 
+        ' зарегистрировался на сайте ', [
+            'user' => Auth::user(),
+        ]);
 
         return redirect(RouteServiceProvider::HOME);
     }
