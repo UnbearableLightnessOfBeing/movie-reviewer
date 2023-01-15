@@ -40,7 +40,7 @@ class AuthenticatedSessionController extends Controller
             'user' => Auth::user(),
         ]);
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->route('/');
     }
 
     /**
@@ -61,6 +61,6 @@ class AuthenticatedSessionController extends Controller
             'user' => $user,
         ]);
 
-        return redirect('/');
+        return redirect()->route('/');
     }
 }

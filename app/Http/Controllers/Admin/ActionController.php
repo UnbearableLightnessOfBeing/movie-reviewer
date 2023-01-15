@@ -20,16 +20,6 @@ class ActionController extends Controller
 
         $perPage = $request->query('perPage') ?? 5;
 
-        // return Inertia::render('Admin/Actions/Index', [
-        //     'logs' => DB::table('log_message')->query()
-        //                     ->when($request->input('search'), function($query, $search) {
-        //                         $query->where('message', 'like', "%{$search}%");
-        //                     })
-        //                     ->paginate($perPage)
-        //                     ->withQueryString(),
-        //     'filters' => $request->only(['search', 'perPage']),
-        // ]);
-
         $search = $request->input('search');
         return Inertia::render('Admin/Actions/Index', [
             'logs' => DB::table('log_messages')->where('message', 'like', "%{$search}%")

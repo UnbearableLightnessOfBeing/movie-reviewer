@@ -5,6 +5,7 @@ use App\Http\Controllers\AvatarController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommetnController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -32,6 +33,15 @@ Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
+        'movies' => Movie::all()
+        ->map(function($movie) {
+            $movie['rating'] = $movie->getAvgRating();
+            return $movie;
+        })
+        ->sortByDesc(function($movie, $key) {
+            return $movie->getAvgRating();
+        })
+        ->take(3)
     ]);
 })->name('/');
 
@@ -93,6 +103,10 @@ Route::get('/movies/{id}', function ($id) {
 
 Route::resource('comments', CommetnController::class)
 ->only(['store', 'update', 'destroy'])
+->middleware(['auth', 'verified']);
+
+Route::resource('ratings', RatingController::class)
+->only(['store', 'update'])
 ->middleware(['auth', 'verified']);
 
 Route::post('user', [UserController::class, 'storeInFavorite'])

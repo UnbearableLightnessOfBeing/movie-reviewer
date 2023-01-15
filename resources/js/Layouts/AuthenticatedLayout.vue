@@ -26,9 +26,10 @@ let user = ref(usePage().props.value.auth.user);
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
                                 <Link :href="route('dashboard')">
-                                    <ApplicationLogo
+                                    <!-- <ApplicationLogo
                                         class="text-white block h-9 w-auto fill-current"
-                                    />
+                                    /> -->
+                                    <svg fill="gray" width="50" height="50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M64 64V352H576V64H64zM0 64C0 28.7 28.7 0 64 0H576c35.3 0 64 28.7 64 64V352c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V64zM128 448H512c17.7 0 32 14.3 32 32s-14.3 32-32 32H128c-17.7 0-32-14.3-32-32s14.3-32 32-32z"/></svg>
                                 </Link>
                             </div>
 
@@ -40,7 +41,7 @@ let user = ref(usePage().props.value.auth.user);
                                 <NavLink :href="route('dashboard')" :active="route().current('dashboard')" class="text-secondary font-bold text-lg">
                                     Фильмы
                                 </NavLink>
-                                <NavLink v-if="user && $page.props.auth.user.roles.map(role => role.name === 'admin').length" 
+                                <NavLink v-if="$page.props.auth.user && $page.props.auth.user.roles.map(role => role.name === 'admin').length" 
                                         :href="route('admin.index')" :active="route().current('admin')"
                                         class="text-secondary font-bold text-lg">
                                     Администратор
@@ -139,7 +140,7 @@ let user = ref(usePage().props.value.auth.user);
                         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')" class="text-secondary font-bold text-lg">
                             Фильмы
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink v-if="user && $page.props.auth.user.roles.map(role => role.name === 'admin').length" 
+                        <ResponsiveNavLink v-if="$page.props.auth.user && $page.props.auth.user.roles.map(role => role.name === 'admin').length" 
                                 :href="route('admin.index')" :active="route().current('admin')"
                                 class="text-secondary font-bold text-lg">
                             Администратор

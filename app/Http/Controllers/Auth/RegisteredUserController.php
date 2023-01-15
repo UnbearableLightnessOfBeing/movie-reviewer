@@ -53,6 +53,6 @@ class RegisteredUserController extends Controller
             'user' => Auth::user(),
         ]);
 
-        return redirect(RouteServiceProvider::HOME);
+        return redirect()->route('/');
     }
 }

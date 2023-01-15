@@ -149,18 +149,18 @@ let isPosterSeen = ref(true);
                             <svg v-if="!isFavorite" class="self-center" width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path fill="white" d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
                             <svg v-else fill="yellow" class="self-center" width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Pro 6.2.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --><path d="M0 48V487.7C0 501.1 10.9 512 24.3 512c5 0 9.9-1.5 14-4.4L192 400 345.7 507.6c4.1 2.9 9 4.4 14 4.4c13.4 0 24.3-10.9 24.3-24.3V48c0-26.5-21.5-48-48-48H48C21.5 0 0 21.5 0 48z"/></svg>
                 
-                            <div class="h-fit">
-                                <Link @click="Inertia.post('/user', { movieId: movie.id }, { preserveScroll: true })" v-if="!isFavorite" 
+                            <Link @click="Inertia.post('/user', { movieId: movie.id }, { preserveScroll: true })" class="h-fit">
+                                <div  v-if="!isFavorite" 
                                     class="text-white font-bold h-fit">
                                     Добавить в избранное
-                                </Link>
+                                </div>
                                 <div v-else class="text-white font-bold">
                                     У Вас в избранном
                                 </div>
                                 <div class="text-sm opacity-60">
                                     у {{ movie.favoriteCount }} пользователей в избранном
                                 </div>
-                            </div>
+                            </Link>
                         </div>
                         <div v-else class="comment-count text-secondary px-4 flex flex gap-2 justify-center items-center lg:order-7">
                             <div class="text-lg font-black self-center">
@@ -177,24 +177,25 @@ let isPosterSeen = ref(true);
                     </div>
 
 
-                    <div class="movie-rating flex justify-around gap-2 px-4 lg:order-8">
+                    <div class="movie-rating flex justify-center items-center gap-2 px-4 lg:order-8">
                         <div class="rating-wrapper">
                             <div v-if="!$page.props.auth.user" @click="Inertia.get('/register')"
                                 class="authenticated  hover:cursor-pointer hover:bg-teal-500 hover:bg-opacity-10 border-transparnt 
                                         bg-primarylight px-3 py-2 rounded-md w-fit border border-transparent hover:border-secondary
                                         transiton-all duration-200 hover:text-teal-400 text-secondary text-center"
                             >Зарегистрируйтесь, чтобы оценить фильм</div>
-                            <div v-else class="authenticated  hover:cursor-pointer hover:bg-black border-transparnt bg-primarylight 
+                            <div v-else class="authenticated hover:cursor-pointer hover:bg-black border-transparnt bg-primarylight 
                                         px-3 py-2 rounded-md w-fit border border-transparent hover:border-blue-500">
-                                <div v-if="movie.userRating" class="rated  flex gap-2 items-end">
+                                <div v-if="movie.userRating" class="rated items-end">
                                     <div class="text-sm tracking-widest text-center text-blue-500 font-bold "
                                         @click="isBeingRated = true; ratingMethod = 'update';">Изменить оценку</div>
                                 </div>
-                                <div v-else  class="text-sm tracking-widest text-center text-blue-500 font-bold "
+                                <div v-else  class="text-sm tracking-widest text-center  text-blue-500 font-bold "
                                     @click="isBeingRated = true">Оценить</div>
-                                <RatingPopup v-if="isBeingRated" :ratingId="+movie.userRating?.id" :method="ratingMethod" :movieId="movie.id" @update:isBeingRated="updateState" />
                                 <!-- <star-rating class="p-4" :border-width="6" :rounded-corners="true" :star-size="70" :glow="10" glow-color="#ffd055"></star-rating> -->
                             </div>
+                            <RatingPopup v-if="isBeingRated" :movieTitle="movie.title" :ratingId="+movie.userRating?.id" :method="ratingMethod" 
+                                        :movieId="movie.id" @update:isBeingRated="updateState" />
                         </div>
                         <div v-if="$page.props.auth.user && isFavorite !== null" class="text-medium favorite-wrapper border border-transparent 
                                 rounded-md h-fit" :class="isFavorite? 'hover:border-pink-400' : 'hover:border-teal-400'">
