@@ -42,5 +42,7 @@ php artisan serve
 
 
 Посмотреть админ панель можно залогинившись как:
+
 admin@admin.com
+
 admin123
