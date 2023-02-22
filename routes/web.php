@@ -50,9 +50,6 @@ Route::get('/', function () {
 // })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/movies', function (Request $request) {
-    // if(auth()->user()) {
-    //     auth()->user()->assignRole('admin');
-    // }
 
     $search = $request->query('search') ?? '';
     $searchGenre = $request->query('searchGenre') ?? '';
