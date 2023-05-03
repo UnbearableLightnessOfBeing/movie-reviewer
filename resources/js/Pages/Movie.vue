@@ -46,7 +46,6 @@ let isPosterSeen = ref(true);
 <template>
     <AuthenticatedLayout>
         <div class="movie-wrapper overflow-hidden">
-
             <div class="movie-container text-white flex flex-col gap-6 pb-6 border-b 
                 border-primarylight sm:mx-4 lg:flex-row lg:flex-wrap lg:justify-between
                 max-w-6xl lg:mx-auto">
